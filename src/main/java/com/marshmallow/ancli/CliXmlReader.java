@@ -15,7 +15,7 @@ import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
 
 /**
- * An object to read an XML {@link File} and produce a {@link Cli} object.
+ * An object to read an XML {@link InputStream} and produce a {@link Cli} object.
  *
  * <p>
  * Created Oct 1, 2017
@@ -53,9 +53,9 @@ public class CliXmlReader {
   }
 
   /**
-   * Read a {@link Cli} object from the XML {@link File} provided to the constructor.
+   * Read a {@link Cli} object from the XML {@link InputStream} provided to the constructor.
    *
-   * @return A {@link Cli} object from the XML {@link File} provided to the constructor
+   * @return A {@link Cli} object from the XML {@link InputStream} provided to the constructor
    * @throws Exception if something goes wrong
    */
   public Cli read() throws Exception {

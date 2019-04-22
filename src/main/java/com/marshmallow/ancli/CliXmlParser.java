@@ -124,7 +124,7 @@ class CliXmlParser extends DefaultHandler {
       boolean isActionCreator = elementName.equals(ACTIONCREATOR);
       String className = attributes.getValue(isActionCreator ? ACTIONCREATOR_CLASS : ACTION_CLASS);
       try {
-        setAction(currentCommand, className, isActionCreator);
+        ReaderUtilities.setAction(currentCommand, className, isActionCreator);
       } catch (Exception e) {
         throw new SAXException(e);
       }
@@ -174,25 +174,11 @@ class CliXmlParser extends DefaultHandler {
     return cli;
   }
 
-  private static ArgumentType<?> getArgumentType(String type) {
-    // TODO: get rid of this horrible hardcoding!
-    switch (type) {
-      case "STRING":
-        return ArgumentType.STRING;
-      case "NUMBER":
-        return ArgumentType.NUMBER;
-      case "BOOLEAN":
-        return ArgumentType.BOOLEAN;
-      default:
-        throw new IllegalArgumentException("No known ArgumentType for type" + type);
-    }
-  }
-
   private static void addArgumentToFlag(MutableFlag flag,
                                         String name,
                                         String description,
                                         String type) {
-    ArgumentType<?> realType = getArgumentType(type);
+    ArgumentType<?> realType = ReaderUtilities.getArgumentType(type);
     MutableArgument argument = flag.setArgument(name, realType);
     if (description != null) {
       argument.setDescription(description);
@@ -203,7 +189,7 @@ class CliXmlParser extends DefaultHandler {
                                            String name,
                                            String description,
                                            String type) {
-    ArgumentType<?> realType = getArgumentType(type);
+    ArgumentType<?> realType = ReaderUtilities.getArgumentType(type);
     MutableArgument argument = command.addArgument(name, realType);
     if (description != null) {
       argument.setDescription(description);
@@ -231,22 +217,6 @@ class CliXmlParser extends DefaultHandler {
       command.setDescription(description);
     }
     return command;
-  }
-
-  private static void setAction(MutableCommand command,
-                                String className,
-                                boolean isActionCreator) throws Exception {
-    String commandName = command.getName();
-    Class<?> clazz = Class.forName(className);
-    if ((isActionCreator && !ActionCreator.class.isAssignableFrom(clazz))
-        || (!isActionCreator && !Action.class.isAssignableFrom(clazz))) {
-      throw new Exception("Class " + clazz.getName() + " for command " + commandName
-                          + " is not an instance of " + Action.class.getName());
-    }
-    Action action =  (isActionCreator
-                      ? ((ActionCreator)clazz.newInstance()).createAction(commandName)
-                      : (Action)clazz.newInstance());
-    command.setAction(action);
   }
 
   private static MutableList addList(MutableList currentList,
