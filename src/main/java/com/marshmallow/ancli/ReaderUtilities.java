@@ -16,7 +16,7 @@ final class ReaderUtilities {
   private ReaderUtilities() { }
 
   /**
-   * This method returns an {@link ArgumentType} give a string.
+   * Returns an {@link ArgumentType} given a string.
    *
    * @param type The argument type name (e.g., STRING, NUMBER, etc.)
    * @return The {@link ArgumentType} for the provided name
@@ -44,7 +44,8 @@ final class ReaderUtilities {
    * {@link ActionCreator}
    * @param isActionCreator Whether or not the class name is an
    * {@link ActionCreator}
-   * @throws Exception
+   * @throws Exception when the provided class name is not an instance of the
+   *     correct class
    */
   public static void setAction(final MutableCommand command,
                                 final String className,

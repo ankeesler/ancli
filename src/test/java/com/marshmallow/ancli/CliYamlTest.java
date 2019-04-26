@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import org.junit.Test;
 
 /**
- * This is a test for stuff related to CLI YAML files.
+ * This is a test for stuff related to CLI yml files.
  *
  * <p>
  * Created April 21, 2019
@@ -149,48 +149,43 @@ public class CliYamlTest extends BaseCliTest {
    */
 
   @Test(expected = Exception.class)
-  public void testMissingCliTag() throws Exception {
-    read("missing-name-tag.yaml");
+  public void testMissingCliName() throws Exception {
+    read("missing-cli-name.yml");
   }
 
   @Test(expected = Exception.class)
   public void testUnknownParameterType() throws Exception {
-    read("bad-parameter-type.yaml");
+    read("bad-parameter-type.yml");
   }
 
   @Test(expected = Exception.class)
   public void testBadClassName() throws Exception {
-    read("bad-class-name.yaml");
-  }
-
-  @Test(expected = Exception.class)
-  public void testUnknownClass() throws Exception {
-    read("unknown-class.yaml");
+    read("bad-class-name.yml");
   }
 
   @Test(expected = Exception.class)
   public void testActionBadClassType() throws Exception {
-    read("bad-action-class-type.yaml");
+    read("bad-action-class-type.yml");
   }
 
   @Test(expected = Exception.class)
   public void testActionCreatorBadClassType() throws Exception {
-    read("bad-action-creator-class-type.yaml");
+    read("bad-action-creator-class-type.yml");
   }
 
   @Test(expected = Exception.class)
   public void testNoActionOrActionCreator() throws Exception {
-    read("no-action-or-action-creator.yaml");
+    read("no-action-or-action-creator.yml");
   }
 
   @Test(expected = Exception.class)
   public void testBothActionAndActionCreator() throws Exception {
-    read("both-action-and-action-creator.yaml");
+    read("both-action-and-action-creator.yml");
   }
 
   @Test(expected = Exception.class)
   public void testTooManyFlagArguments() throws Exception {
-    read("too-many-flag-arguments.yaml");
+    read("too-many-flag-arguments.yml");
   }
 
   private Cli read(String filename) throws Exception {

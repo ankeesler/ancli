@@ -1,10 +1,10 @@
 package com.marshmallow.ancli;
 
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.InputStream;
 import java.util.Map;
 import java.util.function.BiFunction;
+
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * An object to read an YAML {@link InputStream} and produce a {@link Cli} object.
@@ -40,7 +40,7 @@ public class CliYamlReader {
 
     final String name = cast(objMap.get("name"), String.class);
     if (name == null) {
-      throw new Exception("TEST ME");
+      throw new Exception("Could not get 'name' from root of YAML");
     }
 
     final Cli cli = new Cli(name);
@@ -92,7 +92,7 @@ public class CliYamlReader {
   }
 
   private static void parseFlags(
-          final MutableList root,
+          final MutableListOrCommand root,
           final Map objMap
   ) throws Exception {
     final java.util.List flagsList
@@ -108,8 +108,8 @@ public class CliYamlReader {
   }
 
   private static void parseFlag(
-          final MutableList root,
-          final Map<Object, Object> objMap
+          final MutableListOrCommand root,
+          final Map objMap
   ) throws Exception {
     final String shortFlag = cast(objMap.get("shortFlag"), String.class);
     final MutableFlag flag = root.addFlag(shortFlag);
@@ -161,7 +161,7 @@ public class CliYamlReader {
     }
   }
 
-    private static void parseCommand(
+  private static void parseCommand(
           final MutableList root,
           final Map objMap
   ) throws Exception {
@@ -172,10 +172,10 @@ public class CliYamlReader {
             = cast(objMap.get("actionCreator"), String.class);
     if ((actionClassName == null && actionCreatorClassName == null)
             || (actionClassName != null && actionCreatorClassName != null)) {
-      throw new Exception("TEST ME");
+      throw new Exception("Must specify 'action' or 'actionCreator' for command");
     }
     final MutableCommand command = root.addCommand(name, null);
-      ReaderUtilities.setAction(
+    ReaderUtilities.setAction(
             command,
             actionClassName != null ? actionClassName : actionCreatorClassName,
             actionClassName == null);
@@ -193,13 +193,18 @@ public class CliYamlReader {
         parseArgument(command::addArgument, argumentMap);
       }
     }
+
+    parseFlags(command, objMap);
   }
 
   private static <T> T cast(final Object thing, final Class<T> clazz) throws Exception {
     if (thing == null) {
       return null;
-    } else if (!clazz.isInstance(thing)){
-      throw new Exception("TEST ME");
+    } else if (!clazz.isInstance(thing)) {
+      final String msg = String.format("Expected class %s to be %s",
+              thing.getClass().getName(),
+              clazz.getName());
+      throw new Exception(msg);
     } else {
       return clazz.cast(thing);
     }
