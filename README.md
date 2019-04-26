@@ -65,3 +65,65 @@ root.parse(args);
   </command>
 </cli>
 ```
+
+## YAML Initialization
+
+```yaml
+---
+name: tuna
+description: This is the tuna CLI
+flags:
+- shortFlag: a
+  description: This is the short a flag
+- shortFlag: b
+  longFlag: bacon
+  description: This is the short c flag with a parameter
+- shortFlag: c
+  description: This is the short c flag with a parameter
+  argument:
+    name: name
+    description: This is the name of something
+    type: STRING
+- shortFlag: d
+  longFlag: dog
+  description: This is the long d flag with a parameter
+  argument:
+    name: age
+    description: This is the age of the dog
+    type: NUMBER
+- shortFlag: e
+  description: This is a boolean flag
+  argument:
+    name: yesOrNo
+    description: This is a boolean flag
+    type: BOOLEAN
+- shortFlag: no-description-short-flag
+- shortFlag: n
+  longFlag: no-description-long-flag
+  argument:
+    name: blah
+    type: STRING
+commands:
+- name: fish
+  description: This is the tuna fish command
+  flags:
+  - shortFlag: o
+    longFlag: nooooo
+  - shortFlag: o
+    description: The number of fish that you desire
+    argument:
+      name: number
+      type: NUMBER
+  arguments:
+  - name: number
+    description: The number of the fish
+    type: NUMBER
+  - name: name
+    type: STRING
+  actionCreator: com.marshmallow.ancli.TestCliActionCreator
+- name: marlin
+  action: com.marshmallow.ancli.BringHomeBaconTestCliAction
+- name: marlin
+  description: This is the tuna marlin command
+  actionCreator: com.marshmallow.ancli.TestCliActionCreator
+```
